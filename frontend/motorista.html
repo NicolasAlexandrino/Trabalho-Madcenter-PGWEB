@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#003d1f">
+  <title>Motorista — Madcenter Entregas</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="shortcut icon" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="css/motorista.css">
+  <script>
+    // Aplica tema salvo antes da pintura (evita flash)
+    document.documentElement.setAttribute("data-theme",
+      localStorage.getItem("madcenter_tema") || "dark");
+  </script>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════
+       TELA PRINCIPAL
+  ══════════════════════════════════════════════════ -->
+  <div id="mainScreen" class="hidden">
+
+    <!-- HEADER — mesma altura (78px) e padrão do admin -->
+    <header class="moto-header">
+      <img src="assets/logo_madcenter_white.svg" alt="Madcenter"
+           class="moto-header-logo" onerror="this.style.display='none'">
+      <div class="moto-header-info">
+        <span id="headerName" class="moto-header-name"></span>
+        <span class="moto-header-subtitle">Motorista</span>
+      </div>
+      <div class="moto-header-actions">
+        <button id="themeToggle" class="moto-theme-btn" type="button" aria-label="Alternar tema">
+          <!-- SVG injetado por motorista.js -->
+        </button>
+        <button id="logoutBtn" class="moto-logout-btn">Sair</button>
+      </div>
+    </header>
+
+    <!-- ABAS DE NAVEGAÇÃO -->
+    <div class="moto-tabs">
+      <button class="moto-tab active" data-tab="entregas" id="tabBtnEntregas">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        Minhas Entregas
+      </button>
+      <button class="moto-tab" data-tab="mural" id="tabBtnMural">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16v-2"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg>
+        Pedidos Disponíveis
+      </button>
+    </div>
+
+    <div class="moto-content">
+
+      <!-- ════════════════════════════════════════════
+           ABA: MINHAS ENTREGAS
+      ════════════════════════════════════════════ -->
+      <div id="tabEntregas" class="moto-tab-panel">
+
+        <!-- CARD DE PROGRESSO -->
+        <div class="moto-progress-card">
+          <div class="moto-progress-stats">
+            <div class="moto-stat">
+              <strong id="statTotal">0</strong>
+              <span>Total</span>
+            </div>
+            <div class="moto-stat moto-stat-green">
+              <strong id="statFeito">0</strong>
+              <span>Entregues</span>
+            </div>
+            <div class="moto-stat moto-stat-orange">
+              <strong id="statPendente">0</strong>
+              <span>Pendentes</span>
+            </div>
+          </div>
+          <div class="moto-progress-bar-wrap">
+            <div class="moto-progress-bar" id="progressBar"><i></i></div>
+          </div>
+          <div id="progressLabel" class="moto-progress-label">— de — entregas concluídas</div>
+        </div>
+
+        <!-- AVISO SEM ROTA -->
+        <div id="semRotaMsg" class="moto-sem-rota hidden">
+          <span class="moto-sem-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </span>
+          <p>Nenhuma rota em andamento</p>
+          <small>Vá até "Pedidos Disponíveis" para pegar pedidos.</small>
+        </div>
+
+        <!-- LISTA DE PEDIDOS -->
+        <div>
+          <h3 class="moto-section-title" id="listTitle" style="display:none">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16v-2"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg>
+            Seus pedidos do dia
+          </h3>
+          <div id="pedidosList" class="moto-pedidos-list"></div>
+        </div>
+
+        <!-- MAPA -->
+        <div id="mapaSection" class="moto-mapa-section hidden">
+          <h3 class="moto-section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            Mapa de entregas
+          </h3>
+          <div id="motoristaMap" class="moto-map"></div>
+        </div>
+
+      </div><!-- /tabEntregas -->
+
+      <!-- ════════════════════════════════════════════
+           ABA: MURAL DE PEDIDOS
+      ════════════════════════════════════════════ -->
+      <div id="tabMural" class="moto-tab-panel hidden">
+
+        <!-- RESUMO DO MURAL -->
+        <div class="moto-mural-resumo" id="muralResumo" style="display:none">
+          <div class="moto-mural-resumo-item">
+            <strong id="muralCount">0</strong>
+            <span>Disponíveis</span>
+          </div>
+          <div class="moto-mural-resumo-item urgente">
+            <strong id="muralUrgente">0</strong>
+            <span>Urgentes</span>
+          </div>
+        </div>
+
+        <!-- AVISO VAZIO -->
+        <div id="muralVazio" class="moto-sem-rota hidden">
+          <span class="moto-sem-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16v-2"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg>
+          </span>
+          <p>Nenhum pedido disponível</p>
+          <small>Novos pedidos aparecerão aqui assim que cadastrados.</small>
+        </div>
+
+        <!-- LOADING -->
+        <div id="muralLoading" class="moto-mural-loading">
+          Carregando pedidos…
+        </div>
+
+        <!-- CARDS DOS PEDIDOS -->
+        <div id="muralList" class="moto-pedidos-list"></div>
+
+      </div><!-- /tabMural -->
+
+    </div><!-- /moto-content -->
+
+    <!-- BOTÃO FLUTUANTE: abrir no Maps (aba entregas) -->
+    <div id="floatingBtn" class="moto-floating hidden">
+      <button class="moto-btn moto-btn-maps" onclick="abrirNoMaps()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        Abrir próxima entrega no Maps
+      </button>
+    </div>
+
+    <!-- BOTÃO FLUTUANTE: pegar selecionados (aba mural) -->
+    <div id="floatingBtnMural" class="moto-floating moto-floating-mural hidden">
+      <button class="moto-btn moto-btn-primary" onclick="pegarPedidosSelecionados()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+        Pegar selecionados (<span id="selCount">0</span>)
+      </button>
+    </div>
+
+  </div>
+
+  <!-- TOAST -->
+  <div id="motoToast" class="moto-toast"></div>
+
+  <!-- MODAL: Seleção de veículo -->
+  <div id="veiculoModalBackdrop" class="moto-veiculo-backdrop hidden">
+    <div class="moto-veiculo-modal" role="dialog" aria-modal="true" aria-labelledby="veiculoModalTitle">
+      <div class="moto-veiculo-modal-header">
+        <h2 id="veiculoModalTitle" class="moto-veiculo-modal-title">Selecionar Veículo</h2>
+        <button class="moto-veiculo-close" id="veiculoModalClose" aria-label="Fechar">✕</button>
+      </div>
+      <div id="veiculoList" class="moto-veiculo-list"></div>
+      <div class="moto-veiculo-footer">
+        <button class="moto-btn" id="veiculoModalCancelar">Cancelar</button>
+        <button class="moto-btn moto-btn-primary" id="veiculoModalConfirmar" disabled>Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/motorista.js"></script>
+</body>
+</html>

@@ -1,0 +1,902 @@
+/* ======================================================
+   MADCENTER — ÁREA DO ATENDENTE
+   Tokens alinhados ao style.css do admin · tema claro/escuro
+====================================================== */
+
+/* ── DESIGN TOKENS (idênticos ao style.css) ────────── */
+
+:root {
+  --bg:           #f5f7f6;
+  --surface:      #ffffff;
+  --surface-soft: #eef5f1;
+  --text:         #1f2933;
+  --muted:        #6b7280;
+  --line:         #dce6df;
+  --primary:      #005c2e;
+  --primary-2:    #008c45;
+  --primary-3:    #0fa958;
+  --accent:       #f2c94c;
+  --success:      #0fa958;
+  --danger:       #d93025;
+  --warning:      #f2c94c;
+  --blue:         #1777b8;
+  --shadow:       0 16px 36px rgba(0, 92, 46, .11);
+  --radius:       8px;
+
+  /* Aliases para seletores legados */
+  --brand:        var(--primary);
+  --brand-light:  var(--primary-2);
+  --bg-card:      var(--surface);
+  --bg-elevated:  var(--surface);
+  --bg-input:     var(--surface);
+  --text-muted:   var(--muted);
+  --border:       var(--line);
+  --shadow-lg:    0 20px 45px rgba(0, 92, 46, .18);
+  --ring:         0 0 0 3px rgba(15, 169, 88, .14);
+  --radius-sm:    var(--radius);
+  --radius-xs:    var(--radius);
+
+  /* Cores de badge de status (idênticas ao admin) */
+  --st-yellow-bg: #fff4c7;  --st-yellow-fg: #775900;
+  --st-blue-bg:   #dff3ea;  --st-blue-fg:   #006336;
+  --st-green-bg:  #dcfce7;  --st-green-fg:  #12643b;
+  --st-red-bg:    #fee2e2;  --st-red-fg:    #991b1b;
+  --st-orange-bg: #ffedd5;  --st-orange-fg: #9a4b00;
+}
+
+[data-theme="dark"] {
+  --bg:           #111816;
+  --surface:      #17211d;
+  --surface-soft: #203229;
+  --text:         #edf6f1;
+  --muted:        #a7b7ad;
+  --line:         #2e4639;
+  --primary:      #0fa958;
+  --primary-2:    #19bd68;
+  --primary-3:    #42d486;
+  --shadow:       0 18px 45px rgba(0, 0, 0, .32);
+
+  --st-yellow-bg: #5b4b18;  --st-yellow-fg: #ffeaa0;
+  --st-blue-bg:   #193f31;  --st-blue-fg:   #b7f2d5;
+  --st-green-bg:  #174b34;  --st-green-fg:  #b6f2cf;
+  --st-red-bg:    #5b2525;  --st-red-fg:    #ffd0d0;
+  --st-orange-bg: #5b351b;  --st-orange-fg: #ffd0a0;
+}
+
+/* ── RESET ─────────────────────────────────────────── */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: Inter, 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  transition: background .25s ease, color .25s ease;
+}
+
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+img { max-width: 100%; }
+.hidden { display: none !important; }
+
+/* Scrollbar — igual ao sidebar do admin */
+*::-webkit-scrollbar { width: 4px; height: 4px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: var(--primary-2); border-radius: 4px; }
+* { scrollbar-width: thin; scrollbar-color: var(--primary-2) transparent; }
+
+/* ── TELA DE LOGIN ─────────────────────────────────── */
+
+#loginScreen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px 20px;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(0, 140, 69, .10), transparent 70%),
+    var(--bg);
+}
+
+.atend-login-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 38px 28px 30px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  box-shadow: var(--shadow);
+}
+
+.atend-login-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.atend-login-logo img {
+  height: 44px;
+  object-fit: contain;
+  padding: 10px 18px;
+  background: linear-gradient(180deg, #004d27 0%, #003d1f 100%);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 20px rgba(0, 92, 46, .22);
+}
+
+.atend-login-logo strong {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.atend-login-logo span {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.atend-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.atend-login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+/* ── LABELS ────────────────────────────────────────── */
+
+.atend-label,
+.atend-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+/* ── INPUTS ────────────────────────────────────────── */
+
+.atend-login-input,
+.atend-field input,
+.atend-field select,
+.atend-field textarea {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 15px;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.atend-login-input:focus,
+.atend-field input:focus,
+.atend-field select:focus,
+.atend-field textarea:focus {
+  border-color: var(--primary-2);
+  box-shadow: var(--ring);
+}
+
+.atend-field input::placeholder,
+.atend-field textarea::placeholder { color: var(--muted); opacity: .7; }
+
+[data-theme="dark"] .atend-field input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.atend-field select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+}
+
+.atend-field textarea { min-height: 84px; resize: vertical; line-height: 1.5; }
+
+.atend-error {
+  display: none;
+  color: var(--danger);
+  font-size: 13px;
+  text-align: center;
+  padding: 10px;
+  background: var(--st-red-bg);
+  border-radius: var(--radius);
+}
+
+/* ── BOTÕES ────────────────────────────────────────── */
+
+.atend-btn {
+  min-height: 40px;
+  border: 0;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+  -webkit-tap-highlight-color: transparent;
+  padding: 0 16px;
+  white-space: nowrap;
+}
+
+.atend-btn-full { width: 100%; }
+
+/* Botão primário — mesmo padrão do admin */
+.atend-btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.atend-btn-primary:hover {
+  background: #004722;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 92, 46, .26);
+}
+.atend-btn-primary:active { transform: translateY(0) scale(.98); }
+
+/* Botão secundário — mesmo padrão do admin */
+.atend-btn-secondary {
+  background: var(--surface);
+  color: var(--primary);
+  border: 1px solid var(--line);
+}
+.atend-btn-secondary:hover {
+  border-color: var(--primary-2);
+  background: var(--surface-soft);
+  transform: translateY(-1px);
+}
+.atend-btn-secondary:active { transform: translateY(0) scale(.98); }
+
+/* "Novo Pedido" — um pouco mais alto */
+#toggleFormBtn { min-height: 48px; font-size: 15px; }
+
+/* ── HEADER ─────────────────────────────────────────
+   Altura 78px como o topbar do admin.
+   Fundo: gradiente verde da sidebar do admin (logo branca visível).
+────────────────────────────────────────────────── */
+
+.atend-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 28px;
+  background: linear-gradient(180deg, #004d27 0%, #003d1f 100%);
+  box-shadow: 0 2px 18px rgba(0, 30, 12, .32);
+}
+
+.atend-header-logo {
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.atend-header-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.atend-header-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.atend-header-subtitle {
+  font-size: 10px;
+  color: rgba(255, 255, 255, .55);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 600;
+}
+
+.atend-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Botão de tema — mesmo estilo do admin */
+.atend-theme-btn {
+  background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .22);
+  color: #fff;
+  border-radius: var(--radius);
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .2s ease, transform .15s ease;
+}
+.atend-theme-btn:hover { background: rgba(255, 255, 255, .24); transform: translateY(-1px); }
+
+/* Botão Sair — mesmo estilo do admin */
+.atend-logout-btn {
+  background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .22);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 0 16px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background .2s ease, transform .15s ease;
+}
+.atend-logout-btn:hover {
+  background: rgba(217, 48, 37, .80);
+  transform: translateY(-1px);
+}
+
+/* ── CONTEÚDO ──────────────────────────────────────── */
+
+.atend-content {
+  padding: 24px 28px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── RESUMO CARDS — padrão metric-card do admin ────── */
+
+.atend-resumo {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.atend-resumo-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.atend-resumo-card:hover { transform: translateY(-2px); }
+
+/* Barra colorida à esquerda — padrão metric-card */
+.atend-resumo-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: var(--primary-3);
+}
+.atend-resumo-card.yellow::before { background: #e6b800; }
+.atend-resumo-card.blue::before   { background: var(--blue); }
+
+/* Ícone SVG — substitui emoji ::after */
+.atend-resumo-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  background: var(--surface-soft);
+  color: var(--primary-2);
+  flex-shrink: 0;
+}
+.atend-resumo-card.yellow .atend-resumo-icon { background: #fef9c3; color: #b45309; }
+.atend-resumo-card.blue   .atend-resumo-icon { background: #dbeafe; color: var(--blue); }
+
+[data-theme="dark"] .atend-resumo-icon                    { color: var(--primary-3); }
+[data-theme="dark"] .atend-resumo-card.yellow .atend-resumo-icon { background: #4a3a00; color: #fcd34d; }
+[data-theme="dark"] .atend-resumo-card.blue   .atend-resumo-icon { background: #1e2e50; color: #93c5fd; }
+
+/* Número grande — padrão metric-card */
+.atend-resumo-card strong {
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -.5px;
+  line-height: 1;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+/* Label uppercase muted — padrão metric-card */
+.atend-resumo-card span {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  display: block;
+  line-height: 1.3;
+}
+
+/* ── SEÇÕES DO FORMULÁRIO ──────────────────────────── */
+
+.atend-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: atend-fade-in .3s ease;
+}
+
+@keyframes atend-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Card igual ao .panel do admin */
+.atend-section-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+/* Título de seção — padrão panel-header do admin */
+.atend-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: .01em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+[data-theme="dark"] .atend-section-title { color: var(--primary-3); }
+
+/* Título da lista de pedidos */
+.atend-section-title-main {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── GRID DO FORMULÁRIO ────────────────────────────── */
+
+.atend-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.atend-field { display: flex; flex-direction: column; gap: 6px; }
+.atend-field-full { grid-column: 1 / -1; }
+
+/* ── CEP MSG ───────────────────────────────────────── */
+
+.atend-cep-msg {
+  font-size: 12px;
+  min-height: 16px;
+  color: var(--muted);
+  margin-top: 2px;
+  font-weight: 600;
+}
+.atend-cep-msg.ok  { color: var(--success); }
+.atend-cep-msg.err { color: var(--danger); }
+
+/* ── FRETE ESTIMADO ────────────────────────────────── */
+
+.atend-frete-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding: 13px 14px;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--success);
+  border-radius: var(--radius);
+}
+.atend-frete-info span { font-size: 13px; color: var(--muted); font-weight: 600; }
+.atend-frete-info strong { font-size: 20px; color: var(--primary-2); font-weight: 700; }
+
+/* ── BOTÃO SELECIONAR NO MAPA ──────────────────────── */
+
+.atend-btn-map-picker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--surface);
+  border: 1.5px solid var(--primary-2);
+  border-radius: var(--radius);
+  transition: background .2s ease, transform .15s ease, border-color .15s ease;
+}
+.atend-btn-map-picker:hover {
+  background: var(--surface-soft);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.atend-location-preview {
+  margin-top: 10px;
+  padding: 11px 14px;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--success);
+  border-radius: var(--radius);
+  color: var(--primary-2);
+  font-size: 13px;
+  font-weight: 600;
+  word-break: break-word;
+  animation: atend-fade-in .25s ease;
+}
+
+/* ── AÇÕES DO FORMULÁRIO ───────────────────────────── */
+
+.atend-form-actions { display: flex; gap: 12px; }
+.atend-form-actions .atend-btn-secondary { min-width: 120px; }
+.atend-form-actions .atend-btn-primary { flex: 1; min-height: 48px; font-size: 15px; }
+
+/* ── LISTA DE PEDIDOS ──────────────────────────────── */
+
+.atend-pedidos-list { display: flex; flex-direction: column; gap: 12px; }
+
+.atend-loading {
+  text-align: center;
+  padding: 36px 16px;
+  color: var(--muted);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.atend-loading::before {
+  content: "";
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--line);
+  border-top-color: var(--primary-2);
+  border-radius: 50%;
+  animation: atend-spin .8s linear infinite;
+}
+@keyframes atend-spin { to { transform: rotate(360deg); } }
+
+.atend-empty {
+  text-align: center;
+  padding: 44px 20px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── CARD DE PEDIDO — padrão admin adaptado ────────── */
+
+.atend-pedido-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  border-left: 4px solid var(--accent);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--shadow);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.atend-pedido-card:hover { transform: translateY(-2px); }
+
+.atend-pedido-card[data-status="aguardando rota"] { border-left-color: var(--accent); }
+.atend-pedido-card[data-status="em rota"]         { border-left-color: var(--blue); }
+.atend-pedido-card[data-status="entregue"]        { border-left-color: var(--success); opacity: .7; }
+.atend-pedido-card[data-status="cancelado"]       { border-left-color: var(--danger); opacity: .6; }
+.atend-pedido-card[data-status="próximo dia"]     { border-left-color: var(--muted); }
+
+.atend-pedido-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+/* Código do pedido em destaque */
+.atend-pedido-code {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary);
+}
+[data-theme="dark"] .atend-pedido-code { color: var(--primary-3); }
+
+/* ── BADGES — exatamente igual ao admin ────────────── */
+
+.atend-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.atend-badge-yellow { background: #fff4c7;  color: #775900; }
+.atend-badge-blue   { background: #dff3ea;  color: #006336; }
+.atend-badge-green  { background: #dcfce7;  color: #12643b; }
+.atend-badge-red    { background: #fee2e2;  color: #991b1b; }
+.atend-badge-orange { background: #ffedd5;  color: #9a4b00; }
+.atend-badge-gray   { background: #e5e7eb;  color: #374151; }
+
+[data-theme="dark"] .atend-badge-yellow { background: #5b4b18; color: #ffeaa0; }
+[data-theme="dark"] .atend-badge-blue   { background: #193f31; color: #b7f2d5; }
+[data-theme="dark"] .atend-badge-green  { background: #174b34; color: #b6f2cf; }
+[data-theme="dark"] .atend-badge-red    { background: #5b2525; color: #ffd0d0; }
+[data-theme="dark"] .atend-badge-orange { background: #5b351b; color: #ffd0a0; }
+[data-theme="dark"] .atend-badge-gray   { background: #374151; color: #e5e7eb; }
+
+/* Labels e valores dos cards */
+.atend-pedido-row    { display: flex; gap: 10px; align-items: baseline; }
+.atend-pedido-actions { display: flex; justify-content: flex-end; margin-top: 4px; }
+
+.atend-btn-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 30px;
+  padding: 0 12px;
+  font-size: 12px;
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.atend-btn-edit:hover { background: var(--surface-soft); border-color: var(--primary-2); }
+
+/* ── Modal de edição de pedido ─────────────────────── */
+.atend-edit-modal {
+  max-width: 680px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+.atend-edit-modal-body {
+  overflow-y: auto;
+  padding: 20px 24px 4px;
+  flex: 1;
+}
+.atend-edit-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+.atend-edit-form .atend-form-actions { padding-bottom: 20px; }
+
+.atend-pedido-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+  min-width: 62px;
+  flex-shrink: 0;
+}
+
+.atend-pedido-value {
+  font-size: 13px;
+  color: var(--text);
+  flex: 1;
+  line-height: 1.45;
+}
+
+/* ── TOAST — mesmo padrão do admin ─────────────────── */
+
+.atend-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  padding: 13px 18px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9000;
+  box-shadow: var(--shadow);
+  transition: opacity .28s ease, transform .28s ease;
+  max-width: calc(100vw - 32px);
+}
+.atend-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── Indicador de sincronização ──────────────────── */
+.atend-sync-badge {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  background: rgba(15, 169, 88, .13);
+  color: var(--primary-2);
+  border: 1px solid rgba(15, 169, 88, .25);
+  border-radius: 20px;
+  padding: 2px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  z-index: 200;
+  opacity: 0;
+  transition: opacity .4s ease;
+  pointer-events: none;
+}
+.atend-sync-badge.visible { opacity: 1; }
+[data-theme="dark"] .atend-sync-badge { color: var(--primary-3); }
+
+/* ── MODAL DO MAPA ─────────────────────────────────── */
+
+.atend-map-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(8, 28, 18, .62);
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.atend-map-backdrop.active { display: flex; animation: atend-fade-in .2s ease; }
+
+.atend-map-modal {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 860px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.atend-map-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.atend-map-modal-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.atend-map-close {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 22px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  line-height: 1;
+  transition: background .2s ease, color .2s ease;
+}
+.atend-map-close:hover { background: var(--surface-soft); color: var(--danger); }
+
+.atend-map-hint {
+  padding: 12px 18px;
+  font-size: 13px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.atend-map-container { height: 55vh; width: 100%; flex: 1; min-height: 240px; }
+
+.atend-map-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.atend-map-info { flex: 1; min-width: 0; font-size: 13px; color: var(--muted); word-break: break-word; }
+.atend-map-footer-btns { display: flex; gap: 10px; flex-shrink: 0; }
+
+.custom-pin {
+  background: transparent;
+  border: none;
+  font-size: 26px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .5));
+}
+
+/* ── RESPONSIVO ────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .atend-header { padding: 12px 18px; min-height: 64px; }
+  .atend-header-subtitle { display: none; }
+  .atend-content { padding: 16px 16px 64px; }
+}
+
+@media (max-width: 640px) {
+  .atend-form-grid { grid-template-columns: 1fr; }
+  .atend-resumo { gap: 10px; }
+  .atend-resumo-card { padding: 14px 14px 14px 18px; }
+  .atend-resumo-card strong { font-size: 26px; }
+  .atend-header-title { font-size: 15px; }
+}
+
+@media (max-width: 380px) {
+  .atend-resumo { grid-template-columns: 1fr; }
+  .atend-form-actions { flex-direction: column-reverse; }
+  .atend-form-actions .atend-btn-secondary { width: 100%; }
+}
+
+@media (min-width: 900px) {
+  .atend-map-container { height: 60vh; }
+}
